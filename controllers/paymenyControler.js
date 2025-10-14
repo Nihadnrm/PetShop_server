@@ -52,8 +52,8 @@ exports.payment = async (req, res) => {
         },
       ],
       mode: "payment",
-      success_url: "https://pet-shop-frontend-black.vercel.app/paymentsuccess",
-      cancel_url: "https://pet-shop-frontend-black.vercel.app/paymenterror",
+      success_url: "http://localhost:5177/paymentsuccess",
+      cancel_url: "http://localhost:5177/paymenterror",
       metadata: { paymentId: newPayment._id.toString() },
     });
 
