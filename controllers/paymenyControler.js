@@ -29,11 +29,12 @@ exports.payment = async (req, res) => {
     });
     await newPayment.save();
 
-    // ✅ Use a valid public image URL or fallback placeholder
+    // Use a valid public image URL or fallback placeholder
     const petImage = pet.image && pet.image.startsWith("http")
       ? pet.image
-      : "https://via.placeholder.com/300x200.png?text=Pet+Image"; // placeholder image
+      : "https://via.placeholder.com/300x200.png?text=Pet+Image";
 
+    // Create Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [
@@ -51,12 +52,13 @@ exports.payment = async (req, res) => {
         },
       ],
       mode: "payment",
-      success_url: "http://localhost:5173/paymentsuccess",
-      cancel_url: "http://localhost:5173/paymenterror",
+      success_url: "https://pet-shop-frontend-black.vercel.app/paymentsuccess",
+      cancel_url: "https://pet-shop-frontend-black.vercel.app/paymenterror",
       metadata: { paymentId: newPayment._id.toString() },
     });
 
-    res.status(200).json({ sessionId: session.id });
+    // ✅ Return session URL for frontend
+    res.status(200).json({ url: session.url });
   } catch (err) {
     console.error("Stripe error:", err);
     res.status(500).json({ message: err.message });
