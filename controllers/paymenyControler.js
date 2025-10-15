@@ -59,7 +59,7 @@ exports.payment = async (req, res) => {
 
       metadata: { paymentId: newPayment._id.toString() },
     });
-a
+
     // ✅ Return session URL for frontend
     res.status(200).json({ url: session.url });
   } catch (err) {
